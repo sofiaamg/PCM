@@ -15,7 +15,10 @@ void draw(){
   grayscale(imagePCM);
   
   // Change second parameter to get different contrasts
-  contrast(imagePCM, 10);
+  contrast(imagePCM, 5);
+  
+  // Global thresholding
+  thresholding(imagePCM);
 }
 
 void grayscale(PImage imagePCM){
@@ -84,6 +87,41 @@ void contrast(PImage imagePCM, float contrast){
       
       // Set pixel color
       pixels[where] = color(r,g,b);
+    }
+  }
+  updatePixels();
+}
+
+void thresholding(PImage imagePCM){
+  int i, j;
+  int where; 
+  float c;
+  float r,g,b;
+  
+  imagePCM.loadPixels();
+  loadPixels();  
+  
+  // Go through every pixel of the image
+  for(i=0; i<imagePCM.width; i++){
+    for(j=0; j<imagePCM.height; j++){
+      // Calculating the 1D location froma 2D grid
+      where = i+j*imagePCM.width;
+      
+      // Get the pixel color
+      r=red(imagePCM.pixels[where]); 
+      g=green(imagePCM.pixels[where]);
+      b=blue(imagePCM.pixels[where]);
+      
+      // We summed the 3 values to get the color and divided by 255*3 since each of them has a range 0-255
+      c = (r+g+b)/(255*3);
+                  
+      if(c<0.5){
+        // If it's lower than the threshold, set to white
+        pixels[where] = color(0,0,0);
+      } else{
+        // If it's higher than the threshold, set to white
+        pixels[where] = color(255,255,255);
+      }
     }
   }
   updatePixels();
