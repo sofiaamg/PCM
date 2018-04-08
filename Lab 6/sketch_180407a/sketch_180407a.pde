@@ -19,6 +19,9 @@ void draw(){
   
   // Global thresholding
   thresholding(imagePCM);
+  
+  // Extra effect
+  extra(imagePCM);
 }
 
 void grayscale(PImage imagePCM){
@@ -33,7 +36,7 @@ void grayscale(PImage imagePCM){
   // Go through every pixel of the image
   for(i=0; i<imagePCM.width; i++){
     for(j=0; j<imagePCM.height; j++){
-      // Calculating the 1D location froma 2D grid
+      // Calculating the 1D location from a 2D grid
       where = i+j*imagePCM.width;
       
       // Get the pixel color
@@ -104,7 +107,7 @@ void thresholding(PImage imagePCM){
   // Go through every pixel of the image
   for(i=0; i<imagePCM.width; i++){
     for(j=0; j<imagePCM.height; j++){
-      // Calculating the 1D location froma 2D grid
+      // Calculating the 1D location from a 2D grid
       where = i+j*imagePCM.width;
       
       // Get the pixel color
@@ -121,6 +124,47 @@ void thresholding(PImage imagePCM){
       } else{
         // If it's higher than the threshold, set to white
         pixels[where] = color(255,255,255);
+      }
+    }
+  }
+  updatePixels();
+}
+
+void extra(PImage imagePCM){
+  int i, j;
+  int where; 
+  float c;
+  float r,g,b;
+  
+  imagePCM.loadPixels();
+  loadPixels();  
+  
+  // Go through every pixel of the image
+  for(i=0; i<imagePCM.width; i++){
+    for(j=0; j<imagePCM.height; j++){
+      // Calculating the 1D location from a 2D grid
+      where = i+j*imagePCM.width;
+      
+      // Get the pixel color
+      r=red(imagePCM.pixels[where]); 
+      g=green(imagePCM.pixels[where]);
+      b=blue(imagePCM.pixels[where]);
+                  
+      if(i<imagePCM.width/2){
+        // Half of the image is colored as original image
+        pixels[where] = color(r,g,b);
+      } else{
+        // The other half is a negative of the original
+        r=255-r;
+        g=255-g;
+        b=255-b;
+        
+        // Make sure that color range is 0-255
+        r = constrain(r, 0, 255);
+        g = constrain(g, 0, 255);
+        b = constrain(b, 0, 255);
+        
+        pixels[where] = color(r,g,b);
       }
     }
   }
