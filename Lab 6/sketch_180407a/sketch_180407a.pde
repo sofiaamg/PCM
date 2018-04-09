@@ -119,7 +119,7 @@ void thresholding(PImage imagePCM){
       c = (r+g+b)/(255*3);
                   
       if(c<0.5){
-        // If it's lower than the threshold, set to white
+        // If it's lower than the threshold, set to black
         pixels[where] = color(0,0,0);
       } else{
         // If it's higher than the threshold, set to white
