@@ -1,0 +1,8 @@
+Luminance Histogram
+Red Histogram
+Green Histogram
+Blue Histogram
+Cyan Histogram
+Magenta Hystogram
+Yellow Histogram
+Black Histogram
