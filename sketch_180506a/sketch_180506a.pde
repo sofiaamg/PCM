@@ -12,8 +12,9 @@ void setup()
 }
 void draw()
 {
-    //pixelateImage(50);
-    pixelateImageColor("green");
+    //pixelateImage(20);
+    pixelateImageColor("red");
+    //HSB1(20,30,20);
 }
 
 void pixelateImage(int pxSize){
@@ -27,7 +28,7 @@ loadPixels();
       float r = red(img.pixels[((height/pixeles)*(j))*(width)+(width/pixeles*(i))]);
       float g = green(img.pixels[((height/pixeles)*(j))*(width)+(width/pixeles*(i))]);
       float b = blue(img.pixels[((height/pixeles)*(j))*(width)+(width/pixeles*(i))]);
-      
+      fill(r,g,b);
       rect((width/pixeles*(i)),(height/pixeles)*(j),width/pixeles,height/pixeles);
 
       yinc=(height/pixeles)*j;
