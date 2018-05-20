@@ -14,8 +14,9 @@ void setup() {
 
 void draw() {
   //wipe_effect();
+  fade_effect();
   //dissolve_effect();
-  chroma_key();
+  //chroma_key();
 }
 
 void wipe_effect(){
@@ -47,6 +48,30 @@ void wipe_effect(){
         pixels[loc] = c;
       }
     }
+  } 
+  updatePixels(); 
+}
+void fade_effect(){
+  if(mov1.available()){
+    mov1.read();
+  }
+  if(mov2.available()){
+    mov2.read();
+  }
+  fill(0,0,0);
+  rect(0,0,mov1.width,mov1.width);
+  surface.setSize(mov1.width, mov1.height);
+  loadPixels();  
+  if(mov2.time()>2){
+    for (int x = 0; x < mov1.width; x++ ) {
+      for (int y = 0; y < mov1.height; y++ ) {
+        int loc = x+y*mov1.width;
+        color val = mov1.get(x,y);
+        color c = color(red(val), green(val), blue(val), (alpha(val)*0.5*frames)/255);
+        pixels[loc] = c;
+      }
+    }
+    frames++;
   } 
   updatePixels(); 
 }
