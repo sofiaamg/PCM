@@ -1,7 +1,7 @@
 import processing.video.*;
 Movie mov1, mov2;
+PImage m;
 int frames = 0;
-float threshold = 60;
 
 void setup() {
   size(960,540);
@@ -14,9 +14,9 @@ void setup() {
 
 void draw() {
   //wipe_effect();
-  fade_effect();
+  //fade_effect();
   //dissolve_effect();
-  //chroma_key();
+  chroma_key();
 }
 
 void wipe_effect(){
@@ -106,29 +106,26 @@ void chroma_key(){
   }
   if(mov2.available()){
     mov2.read();
+    m=mov2.get();
   }
+  
+  m.resize(mov1.width, mov1.height);
+  
   surface.setSize(mov1.width, mov1.height);
   image(mov2, 0,0, width, height);
   loadPixels();  
-  for (int x = 0; x < mov1.width; x++ ) {
-    for (int y = 0; y < mov1.height; y++ ) {
-      int loc = x+y*mov1.width;
-      color fgColor = pixels[loc]; 
-      color bgColor = mov2.pixels[loc];
-
-      float r1 = red(fgColor);
-      float g1 = green(fgColor);
-      float b1 = blue(fgColor);
-      float r2 = red(bgColor);
-      float g2 = green(bgColor);
-      float b2 = blue(bgColor);
-      float diff = dist(r1, g1, b1, r2, g2, b2);
-
-      if (diff > threshold) {
-        pixels[loc] = fgColor;
-      } else {
+  for (int x = 0; x < m.width; x++ ) {
+    for (int y = 0; y < m.height; y++ ) {
+      int loc = x+y*m.width;
+      
+      int red = (0xff0000&m.pixels[loc])>>16; // Get red
+      int green = (0xff00&m.pixels[loc])>>8; // Get green
+      int blue = 0xff&m.pixels[loc]; // Get blue
+      
+      if (green >= 215 && green >= red && green >= blue){
         pixels[loc] = mov1.pixels[loc];
       }
+      
     }
   } 
   updatePixels(); 
